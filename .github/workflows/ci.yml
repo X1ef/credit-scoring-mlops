@@ -1,0 +1,20 @@
+name: CI
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -e ".[dev]"
+      - run: black src tests
+      - run: flake8 src tests --max-line-length=88 --extend-ignore=E203,W503,E501
+      - run: pytest -q
+      - run: python -m credit_scoring.validation --data tests/fixtures/valid_credit_sample.csv

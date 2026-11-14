@@ -1,0 +1,8 @@
+{
+  "metric": "PSI",
+  "population": "predicted_default_probability",
+  "psi": 0.015833,
+  "reference_size": 24000,
+  "current_size": 300,
+  "interpretation": "stable"
+}

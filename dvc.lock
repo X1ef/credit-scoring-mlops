@@ -1,0 +1,79 @@
+schema: '2.0'
+stages:
+  prepare:
+    cmd: python -m credit_scoring.prepare
+    deps:
+    - path: data/raw/UCI_Credit_Card.csv
+      hash: md5
+      md5: 0a76a48f9f567de332640c3cc751cb20
+      size: 2698311
+    - path: src/credit_scoring/features.py
+      hash: md5
+      md5: 09410994a52005c104fe097efc1c2aa5
+      size: 1320
+    - path: src/credit_scoring/prepare.py
+      hash: md5
+      md5: bec6bbdef2c4019e742f377ff18bcd63
+      size: 1053
+    - path: src/credit_scoring/validation.py
+      hash: md5
+      md5: bf03108556fb9df266063d68e6c33b9f
+      size: 1311
+    params:
+      params.yaml:
+        prepare.random_state: 42
+        prepare.test_size: 0.2
+    outs:
+    - path: data/processed/test.csv
+      hash: md5
+      md5: 63b3d978711fa078352ae01a41cc760c
+      size: 904579
+    - path: data/processed/train.csv
+      hash: md5
+      md5: 5ce1fab2c0afb6fbf806250320b64891
+      size: 3620333
+  train:
+    cmd: python -m credit_scoring.train
+    deps:
+    - path: data/processed/test.csv
+      hash: md5
+      md5: 63b3d978711fa078352ae01a41cc760c
+      size: 904579
+    - path: data/processed/train.csv
+      hash: md5
+      md5: 5ce1fab2c0afb6fbf806250320b64891
+      size: 3620333
+    - path: src/credit_scoring/features.py
+      hash: md5
+      md5: 09410994a52005c104fe097efc1c2aa5
+      size: 1320
+    - path: src/credit_scoring/metrics.py
+      hash: md5
+      md5: 5faac9b31a019b457b7c5f6a2fa005f8
+      size: 777
+    - path: src/credit_scoring/modeling.py
+      hash: md5
+      md5: 1ca947b150ae1df7e0936e601b1ab287
+      size: 2024
+    - path: src/credit_scoring/train.py
+      hash: md5
+      md5: 371c07b647cd6d1022098a2c1f7ea615
+      size: 3543
+    params:
+      params.yaml:
+        train.cv: 3
+        train.random_state: 42
+        train.scoring: roc_auc
+    outs:
+    - path: metrics/metrics.json
+      hash: md5
+      md5: 2b833b48b86f62a6792201fb03882ec7
+      size: 279
+    - path: models/credit_default_model.joblib
+      hash: md5
+      md5: 66c35311c2022f71d6d3db830b135857
+      size: 402354
+    - path: monitoring/reference_scores.npy
+      hash: md5
+      md5: 7cf0d3af1b7483518c852d81f6ac49d6
+      size: 192128

@@ -1,0 +1,1 @@
+# Notebooks\n\n`01_run_pipeline.ipynb` — главный end-to-end ноутбук. Запускайте ячейки сверху вниз: он выполняет EDA, Pandera validation, Feature Engineering, train/test split, пять MLflow экспериментов, DVC repro, локальные CI-проверки, FastAPI, опциональный Docker smoke test и PSI monitoring.\n

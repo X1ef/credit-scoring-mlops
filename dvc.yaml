@@ -1,0 +1,33 @@
+stages:
+  prepare:
+    cmd: python -m credit_scoring.prepare
+    deps:
+      - src/credit_scoring/prepare.py
+      - src/credit_scoring/features.py
+      - src/credit_scoring/validation.py
+      - data/raw/UCI_Credit_Card.csv
+    params:
+      - prepare.test_size
+      - prepare.random_state
+    outs:
+      - data/processed/train.csv
+      - data/processed/test.csv
+  train:
+    cmd: python -m credit_scoring.train
+    deps:
+      - src/credit_scoring/train.py
+      - src/credit_scoring/features.py
+      - src/credit_scoring/modeling.py
+      - src/credit_scoring/metrics.py
+      - data/processed/train.csv
+      - data/processed/test.csv
+    params:
+      - train.random_state
+      - train.cv
+      - train.scoring
+    outs:
+      - models/credit_default_model.joblib
+      - monitoring/reference_scores.npy
+    metrics:
+      - metrics/metrics.json:
+          cache: false
